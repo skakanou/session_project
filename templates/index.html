@@ -76,9 +76,15 @@
 
         <!-- Login -->
         <div id="login">
+            
             {% if error %}
             <p style="color: red;">{{ error }}</p>
             {% endif %}
+
+            {% if success %}
+            <p style="color: green;">{{ success }}</p>
+            {% endif %}
+
             <h2>Connexion</h2>
             <form action="/login" method="POST">
                 <input type="text" name="username" placeholder="Nom d'utilisateur" required>
@@ -98,6 +104,7 @@
                 <input type="text" name="username" placeholder="Nom d'utilisateur" required>
                 <input type="email" name="email" placeholder="Email" required>
                 <input type="password" name="password" placeholder="Mot de passe" required>
+                <input type="password" name="confirm_password" placeholder="Confirmer le mot de passe" required>
                 <button type="submit">S'inscrire</button>
             </form>
 

@@ -116,9 +116,9 @@
     <div class="sidebar">
         <h2>Administration</h2>
 
-        <a href="/admin/events">📅 Événements</a>
-        <a href="/admin/events/create">➕ Créer un événement</a>
-        <a href="/logout">🚪 Déconnexion</a>
+        <a href="{{ url_for('users.events') }}">📅 Événements</a>
+        <a href="{{ url_for('users.create_event') }}">➕ Créer un événement</a>
+        <a href="{{ url_for('users.logout') }}">🚪 Déconnexion</a>
     </div>
 
     <div class="content">
@@ -126,7 +126,7 @@
         <div class="header">
             <h1>Gestion des événements</h1>
 
-            <a href="/admin/events/create" class="btn-create">
+            <a href="{{ url_for('users.create_event') }}" class="btn-create">
                 + Nouvel événement
             </a>
         </div>
@@ -139,11 +139,11 @@
                 </div>
 
                 <div class="actions">
-                    <a href="/admin/events/edit/1" class="btn-edit">
+                    <a href="{{ url_for('users.edit_event', event_id=1) }}" class="btn-edit">
                         Modifier
                     </a>
 
-                    <form action="/admin/events/delete/1" method="POST">
+                    <form action="{{ url_for('users.delete_event', event_id=1) }}" method="POST">
                         <button class="btn-delete">
                             Supprimer
                         </button>
@@ -160,11 +160,11 @@
                 </div>
 
                 <div class="actions">
-                    <a href="/admin/events/edit/2" class="btn-edit">
+                    <a href="{{ url_for('users.edit_event', event_id=2) }}" class="btn-edit">
                         Modifier
                     </a>
 
-                    <form action="/admin/events/delete/2" method="POST">
+                    <form action="{{ url_for('users.delete_event', event_id=2) }}" method="POST">
                         <button class="btn-delete">
                             Supprimer
                         </button>
