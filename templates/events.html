@@ -132,45 +132,28 @@
             </form>
         </div>
 
-        <div class="card">
+    {% for event in events %}
+    <div class="card">
+        <div class="event-header">
+            <div>
+                <h3>{{ event.event_name }}</h3>
+                <p>
+                    {{ event.event_date }} • {{ event.location }}
+                </p>
+                <p>{{ event.category }}</p>
+                <p>{{ event.description }}</p>
+                <p>Places : {{ event.seats_available }}</p>
+            </div>
 
-            <div class="event">
-                <div class="event-info">
-                    <h3>Festival de Musique</h3>
-                    <p>12 août 2026 • Montréal</p>
-                </div>
-
+            <div class="actions">
                 <form action="/reservations/create" method="POST">
-                    <input type="hidden" name="event_id" value="1">
+                    <input type="hidden" name="event_id" value="{{ event.id }}">
                     <button type="submit">Réserver</button>
                 </form>
             </div>
-
-            <div class="event">
-                <div class="event-info">
-                    <h3>Conférence Tech</h3>
-                    <p>20 septembre 2026 • Montréal</p>
-                </div>
-
-                <form action="/reservations/create" method="POST">
-                    <input type="hidden" name="event_id" value="2">
-                    <button type="submit">Réserver</button>
-                </form>
-            </div>
-
-            <div class="event">
-                <div class="event-info">
-                    <h3>Salon du Livre</h3>
-                    <p>2 octobre 2026 • Montréal</p>
-                </div>
-
-                <form action="/reservations/create" method="POST">
-                    <input type="hidden" name="event_id" value="3">
-                    <button type="submit">Réserver</button>
-                </form>
-            </div>
-
         </div>
+    </div>
+    {% endfor %}
 
     </div>
 

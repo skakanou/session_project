@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Administration</title>
+    <title>Page d'administration</title>
 
     <style>
         * {
@@ -117,7 +117,7 @@
         <h2>Administration</h2>
 
         <a href="{{ url_for('users.events') }}">📅 Événements</a>
-        <a href="{{ url_for('users.create_event') }}">➕ Créer un événement</a>
+        <a href="{{ url_for('admin.create_event') }}">➕ Créer un événement</a>
         <a href="{{ url_for('users.logout') }}">🚪 Déconnexion</a>
     </div>
 
@@ -126,53 +126,36 @@
         <div class="header">
             <h1>Gestion des événements</h1>
 
-            <a href="{{ url_for('users.create_event') }}" class="btn-create">
+            <a href="{{ url_for('admin.create_event') }}" class="btn-create">
                 + Nouvel événement
             </a>
         </div>
 
+        {% for event in events %}
         <div class="card">
             <div class="event-header">
                 <div>
-                    <h3>Festival de Musique</h3>
-                    <p>12 août 2026 • Montréal</p>
+                    <h3>{{ event.event_name }}</h3>
+                    <p>
+                        {{ event.event_date }} • {{ event.location }}
+                    </p>
+                    <p>{{ event.category }}</p>
+                    <p>{{ event.description }}</p>
+                    <p>Places : {{ event.seats_available }}</p>
                 </div>
-
+        
                 <div class="actions">
-                    <a href="{{ url_for('users.edit_event', event_id=1) }}" class="btn-edit">
-                        Modifier
-                    </a>
-
-                    <form action="{{ url_for('users.delete_event', event_id=1) }}" method="POST">
-                        <button class="btn-delete">
-                            Supprimer
-                        </button>
+                    <a href="#" class="btn-edit">Modifier</a>
+        
+                    <form action="#" method="POST">
+                        <button class="btn-delete">Supprimer</button>
                     </form>
                 </div>
             </div>
         </div>
+        {% endfor %}
 
-        <div class="card">
-            <div class="event-header">
-                <div>
-                    <h3>Conférence Tech</h3>
-                    <p>20 septembre 2026 • Montréal</p>
-                </div>
-
-                <div class="actions">
-                    <a href="{{ url_for('users.edit_event', event_id=2) }}" class="btn-edit">
-                        Modifier
-                    </a>
-
-                    <form action="{{ url_for('users.delete_event', event_id=2) }}" method="POST">
-                        <button class="btn-delete">
-                            Supprimer
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-
+   
     </div>
 
 </body>

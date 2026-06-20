@@ -1,6 +1,6 @@
 from flask import Blueprint, redirect, render_template, request, session, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
-from models import db, User
+from models import Event, db, User
 import re
 
 #------------------------------------------------register-----------------------------------------------------
@@ -14,7 +14,7 @@ def is_strong_pwd(pwd):
     pwd = pwd.strip()
 
     pattern = r"^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^\w\s]).{12,}$"
-    return bool(re.match(pattern, pwd))
+    return bool(re.fullmatch(pattern, pwd))
 
 @user_bp.route('/register', methods=['POST'])
 def register():
@@ -60,11 +60,11 @@ def login():
     session['username'] = user.username
     session['role'] = user.role
     
-    if user.role == 'admin':
-        return render_template('admin_dash.html', success=f"Bienvenue, {user.username} ! Vous êtes connecté en tant que {user.role}.")
+    if user.role == "admin":
+        return render_template('admin_dash.html') # Redirige vers le tableau de bord admin
 
     else :
-        return render_template('events.html', success=f"Bienvenue, {user.username} ! Vous êtes connecté en tant que {user.role}.")
+        return redirect(url_for('users.events')) # Redirige vers la page des événements
 
 #-----------------------------------------------------logout-----------------------------------------------------
 @user_bp.route('/logout')
@@ -76,11 +76,18 @@ def logout():
 @user_bp.route('/events')
 def events():
     if 'user_id' not in session:
-        return url_for('users.login') # Redirige vers la page de connexion si l'utilisateur n'est pas connecté
-    return render_template('events.html')
+        return redirect(url_for('users.login_page')) # Redirige vers la page de connexion si l'utilisateur n'est pas connecté
+    
+    events = Event.query.all() #Pour recuperer tous les événements de la base de données
+    return render_template('events.html', events=events) # Rendu du template events
+    
 
 @user_bp.route('/user_dash')
 def user_dash():
     if 'user_id' not in session:
-        return url_for('users.login') # Redirige vers la page de connexion si l'utilisateur n'est pas connecté
+        return redirect(url_for('users.login_page')) # Redirige vers la page de connexion si l'utilisateur n'est pas connecté
     return render_template('user_dash.html')
+
+@user_bp.route('/login')
+def login_page():
+    return render_template('index.html')
