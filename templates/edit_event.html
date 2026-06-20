@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modifier un événement</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f6f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            width: 700px;
+            max-width: 95%;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #1f2937;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: bold;
+            color: #374151;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 25px;
+        }
+
+        .btn-submit {
+            background: #16a34a;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .btn-submit:hover {
+            background: #15803d;
+        }
+
+        .btn-cancel {
+            background: #dc2626;
+            color: white;
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        .btn-cancel:hover {
+            background: #b91c1c;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Modifier un événement</h1>
+
+        <form method="POST" ">
+
+            <div class="form-group">
+                <label for="event_name">Nom de l'événement</label>
+                <input type="text" name="event_name" value="{{ event.event_name }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="event_date">Date de l'événement</label>
+                <input type="date" name="event_date" value="{{ event.event_date }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="location">Localisation</label>
+                <input type="text" name="location" value="{{ event.location }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="seats_available">Nombre de places disponibles</label>
+                <input type="number" name="seats_available" value="{{ event.seats_available }}" required>
+
+            </div>
+
+            <div class="form-group">
+                <label for="category">Catégorie</label>
+
+                <select id="category" name="category" required>
+                    <option value="">-- Sélectionner une catégorie --</option>
+                    <option value="Conference"{% if event.category=="Conference" %}selected{% endif %}>Conférence</option>
+                    <option value="Formation"{% if event.category=="Formation" %}selected{% endif %}>Formation</option>
+                    <option value="Musique"{% if event.category=="Musique" %}selected{% endif %}>Musique</option>
+                    <option value="Sport"{% if event.category=="Sport" %}selected{% endif %}>Sport</option>
+                    <option value="Technologie"{% if event.category=="Technologie" %}selected{% endif %}>Technologie</option>
+                    <option value="Business"{% if event.category=="Business" %}selected{% endif %}>Business</option>
+                    <option value="Culture"{% if event.category=="Culture" %}selected{% endif %}>Culture</option>
+                    <option value="Autre"{% if event.category=="Autre" %}selected{% endif %}>Autre</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Description</label>
+
+                <textarea name="description">{{ event.description }}</textarea>
+            </div>
+
+            <div class="buttons">
+
+                <a href="{{ url_for('admin.admin_dash') }}" class="btn-cancel">
+                    Annuler
+                </a>
+
+                <button type="submit" class="btn-submit">
+                    Mettre à jour l'événement
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</body>
+
+</html>

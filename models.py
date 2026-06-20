@@ -34,3 +34,5 @@ class Booking(db.Model):
     event = db.relationship('Event', backref=db.backref('bookings', lazy=True))
 
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    state = db.Column(db.Enum('Confirmed', 'Cancelled'), nullable=False, default='Confirmed')

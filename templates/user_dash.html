@@ -110,47 +110,17 @@
 
         <h1>Mes réservations</h1>
 
+        {% for r in reservations %}
         <div class="card">
-            <div class="header">
-                <div>
-                    <h3>Festival de Musique</h3>
-                    <p>12 août 2026</p>
-                </div>
-
-                <span class="status pending">
-                    En attente
-                </span>
-            </div>
-
-            <br>
-
-            <form action="/reservations/cancel/1" method="POST">
-                <button type="submit">
-                    Annuler la réservation
-                </button>
+            <h3>{{ r.event.event_name }}</h3>
+            <p>{{ r.event.event_date }} • {{ r.event.location }}</p>
+        
+            <form action="{{ url_for('users.cancel_reservation', res_id=r.id) }}" method="POST">
+                <button type="submit">Annuler</button>
             </form>
         </div>
+        {% endfor %}
 
-        <div class="card">
-            <div class="header">
-                <div>
-                    <h3>Conférence Tech</h3>
-                    <p>20 septembre 2026</p>
-                </div>
-
-                <span class="status confirmed">
-                    Réservé
-                </span>
-            </div>
-
-            <br>
-
-            <form action="/reservations/cancel/2" method="POST">
-                <button type="submit">
-                    Annuler la réservation
-                </button>
-            </form>
-        </div>
 
         <div class="card">
             <div class="header">

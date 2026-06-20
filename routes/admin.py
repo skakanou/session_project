@@ -48,3 +48,35 @@ def create_event():
         return redirect(url_for('admin.admin_dash'))
 
     return render_template('create_event.html')
+
+@admin_bp.route('/edit_event/<int:event_id>', methods=['GET', 'POST'])
+def edit_event(event_id):
+    if 'user_id' not in session or session.get('role') != 'admin':
+        return redirect(url_for('users.login_page'))
+
+    event = Event.query.get_or_404(event_id)
+
+    if request.method == 'POST':
+        event.event_name = request.form.get('event_name')
+        event.event_date = datetime.strptime(request.form.get('event_date'), '%Y-%m-%d').date()
+        event.location = request.form.get('location')
+        event.category = request.form.get('category')
+        event.seats_available = int(request.form.get('seats_available'))
+        event.description = request.form.get('description')
+
+        db.session.commit()
+        return redirect(url_for('admin.admin_dash'))
+
+    return render_template('edit_event.html', event=event)
+
+@admin_bp.route('/delete_event/<int:event_id>', methods=['POST'])
+def delete_event(event_id):
+    if 'user_id' not in session or session.get('role') != 'admin':
+        return redirect(url_for('users.login_page'))
+
+    event = Event.query.get_or_404(event_id)
+
+    db.session.delete(event)
+    db.session.commit()
+    
+    return redirect(url_for('admin.admin_dash'))

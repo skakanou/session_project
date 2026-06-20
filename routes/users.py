@@ -61,7 +61,7 @@ def login():
     session['role'] = user.role
     
     if user.role == "admin":
-        return render_template('admin_dash.html') # Redirige vers le tableau de bord admin
+        return redirect(url_for('admin.admin_dash')) # Redirige vers le tableau de bord admin
 
     else :
         return redirect(url_for('users.events')) # Redirige vers la page des événements
@@ -78,9 +78,9 @@ def events():
     if 'user_id' not in session:
         return redirect(url_for('users.login_page')) # Redirige vers la page de connexion si l'utilisateur n'est pas connecté
     
-    events = Event.query.all() #Pour recuperer tous les événements de la base de données
-    return render_template('events.html', events=events) # Rendu du template events
-    
+    events = Event.query.all() # Récupère tous les événements de la base de données
+    return render_template('events.html', events=events) # Rendu du template des événements avec les données des événements
+
 
 @user_bp.route('/user_dash')
 def user_dash():
@@ -88,6 +88,6 @@ def user_dash():
         return redirect(url_for('users.login_page')) # Redirige vers la page de connexion si l'utilisateur n'est pas connecté
     return render_template('user_dash.html')
 
-@user_bp.route('/login')
+@user_bp.route('/login_page')
 def login_page():
     return render_template('index.html')
