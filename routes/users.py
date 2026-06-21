@@ -1,6 +1,6 @@
 from flask import Blueprint, redirect, render_template, request, session, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
-from models import Event, db, User
+from models import Booking, Event, db, User
 import re
 
 #------------------------------------------------register-----------------------------------------------------
@@ -75,18 +75,27 @@ def logout():
 #-----------------------------------------------------events & user dash-----------------------------------------------------
 @user_bp.route('/events')
 def events():
+    query = request.args.get('q')
+    
     if 'user_id' not in session:
         return redirect(url_for('users.login_page')) # Redirige vers la page de connexion si l'utilisateur n'est pas connecté
     
-    events = Event.query.all() # Récupère tous les événements de la base de données
-    return render_template('events.html', events=events) # Rendu du template des événements avec les données des événements
+    if query:
+        events = Event.query.filter(
+            Event.event_name.ilike(f'%{query}%')
+            ).all()
+    else:
+        events = Event.query.all() # Récupère tous les événements de la base de données
+    return render_template('events.html', events=events, query=query) # Rendu du template des événements avec les données des événements
 
 
 @user_bp.route('/user_dash')
 def user_dash():
     if 'user_id' not in session:
         return redirect(url_for('users.login_page')) # Redirige vers la page de connexion si l'utilisateur n'est pas connecté
-    return render_template('user_dash.html')
+    
+    reserve = Booking.query.filter_by(user_id=session['user_id']).all()
+    return render_template('user_dash.html', reserve=reserve)
 
 @user_bp.route('/login_page')
 def login_page():

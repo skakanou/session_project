@@ -64,15 +64,15 @@
         }
 
         .pending {
-            background: #fef3c7;
+            background: #ffcc00;
         }
 
         .confirmed {
-            background: #dcfce7;
+            background: #00ff59;
         }
 
         .cancelled {
-            background: #fee2e2;
+            background: #ff0000;
         }
 
         .header {
@@ -110,30 +110,30 @@
 
         <h1>Mes réservations</h1>
 
-        {% for r in reservations %}
+        {% for reservation in reserve %}
         <div class="card">
-            <h3>{{ r.event.event_name }}</h3>
-            <p>{{ r.event.event_date }} • {{ r.event.location }}</p>
-        
-            <form action="{{ url_for('users.cancel_reservation', res_id=r.id) }}" method="POST">
-                <button type="submit">Annuler</button>
+            <div class="header">
+                <h3>{{ reservation.event.event_name }}</h3>
+                <span class="status {{ reservation.state }}">{{ reservation.state }}</span>
+            </div>
+            <p>Date : {{ reservation.event.event_date.strftime('%Y-%m-%d') }}</p>
+            <p>Lieu : {{ reservation.event.location }}</p>
+            <p>Quantité : {{ reservation.quantity }}</p>
+
+            {% if reservation.state != 'Cancelled' %}
+            <form action="{{ url_for('reservation.cancel_reservation', booking_id=reservation.id) }}" method="POST" 
+            onsubmit="return confirm('Êtes-vous sûr de vouloir annuler cette réservation ?');">
+                <button type="submit">Annuler la réservation</button>
             </form>
+            {% else %}
+            <p style="color:red; font-weight:bold;">Réservation annulée</p>
+            {% endif %}
         </div>
         {% endfor %}
 
-
-        <div class="card">
-            <div class="header">
-                <div>
-                    <h3>Salon du Livre</h3>
-                    <p>2 octobre 2026</p>
-                </div>
-
-                <span class="status cancelled">
-                    Annulé
-                </span>
-            </div>
-        </div>
+        {% if reserve|length == 0 %}
+        <p>Aucune réservation pour le moment.</p>
+        {% endif %}
 
     </div>
 

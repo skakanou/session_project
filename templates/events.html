@@ -124,8 +124,9 @@
         <h1>Événements disponibles</h1>
 
         <div class="card">
-            <form class="search-form" action="/events/search" method="GET">
-                <input type="text" name="query" placeholder="Rechercher un événement...">
+            <form class="search-form" action="/events" method="GET">
+                <input type="text" name="q" placeholder="Rechercher un événement..." 
+                value="{{ query or '' }}" style="border: 1px solid #ddd; padding: 10px; border-radius: 6px; width: 100%;">
                 <button type="submit">
                     Rechercher
                 </button>
@@ -142,8 +143,16 @@
                     <p>Places disponibles : {{ event.seats_available }}</p>
                 </div>
 
-                <form action="{{ url_for('reservation.reserve', event_id=event.id) }}" method="POST">
-                    <input type="hidden" name="event_id" value="{{ event.id }}">
+                <form action="{{ url_for('reservation.make_reservation', event_id=event.id) }}" method="POST"
+                    style="display:flex; gap:10px; align-items:center;">
+                
+                    <input type="number" 
+                    name="quantity" 
+                    min="1" 
+                    max="{{ event.seats_available }}" 
+                    value="1"
+                        style="width:70px; padding:5px;">
+                
                     <button type="submit">Réserver</button>
                 </form>
             </div>

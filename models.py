@@ -22,6 +22,7 @@ class Event(db.Model):
     description = db.Column(db.Text, nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     category = db.Column(db.String(50), nullable=False)
+    bookings = db.relationship('Booking', back_populates='event', cascade="all, delete-orphan")
 
 class Booking(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -31,8 +32,10 @@ class Booking(db.Model):
     booking_date = db.Column(db.Date, nullable=False)
     
     event_id = db.Column(db.Integer, db.ForeignKey('event.id'), nullable=False)
-    event = db.relationship('Event', backref=db.backref('bookings', lazy=True))
+    event = db.relationship('Event', back_populates='bookings', lazy=True)
 
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     state = db.Column(db.Enum('Confirmed', 'Cancelled'), nullable=False, default='Confirmed')
+
+    quantity = db.Column(db.Integer, nullable=False, default=1)
